@@ -11,12 +11,10 @@ MongoClient.connect(
     }
     db = client.db("todoapp");
 
-    // db.collection("post").insertOne(
-    //   { _id: 3, 이름: "John", 나이: 20 },
-    //   (error, result) => {
-    //     console.log("저장완료");
-    //   }
-    // );
+    app.listen(8080, () => {
+      console.log("listening on 8080");
+    });
+
     app.get("/", (req, res) => {
       res.sendFile(__dirname + "/index.html");
     });
@@ -34,10 +32,6 @@ MongoClient.connect(
           console.log("저장완료");
         }
       );
-    });
-
-    app.listen(8080, () => {
-      console.log("listening on 8080");
     });
   }
 );
