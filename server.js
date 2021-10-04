@@ -25,7 +25,6 @@ MongoClient.connect(
       db.collection("post")
         .find()
         .toArray((error, result) => {
-          console.log(result);
           res.render("list.ejs", { posts: result });
         });
     });
@@ -60,3 +59,11 @@ MongoClient.connect(
     });
   }
 );
+
+app.delete("/delete", (req, res) => {
+  let requestedID = parseInt(req.body._id);
+  db.collection("post").deleteOne({ _id: requestedID }, (error, result) => {
+    console.log("삭제완료");
+    res.status(200).send({ message: "성공했습니다" });
+  });
+});
