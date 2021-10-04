@@ -8,3 +8,11 @@ app.listen(8080, function () {
 app.get("/pet", function (req, res) {
   res.send("펫용품");
 });
+
+app.get("/beauty", (req, res) => {
+  res.send("뷰티용품");
+});
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
