@@ -1,18 +1,25 @@
 const express = require("express");
 const app = express();
+app.use(express.urlencoded({ extended: true }));
 
-app.listen(8080, function () {
-  console.log("listening on 8080");
-});
+const MongoClient = require("mongodb").MongoClient;
+MongoClient.connect(
+  "mongodb+srv://harryborrison5148:9T6MuLC8R1PoHjoG@cluster0.gbaka.mongodb.net/todoapp?retryWrites=true&w=majority",
+  (err, client) => {
+    if (err) {
+      return console.log(err);
+    }
+    db = client.db("todoapp");
 
-app.get("/pet", function (req, res) {
-  res.send("펫용품");
-});
+    db.collection("post").insertOne(
+      { 이름: "John", 나이: 20 },
+      (error, result) => {
+        console.log("저장완료");
+      }
+    );
 
-app.get("/beauty", (req, res) => {
-  res.send("뷰티용품");
-});
-
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
+    app.listen(8080, () => {
+      console.log("listening on 8080");
+    });
+  }
+);
