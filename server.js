@@ -32,12 +32,29 @@ MongoClient.connect(
 
     app.post("/add", (req, res) => {
       res.send("전송완료");
-      console.log(req.body.date);
-      console.log(req.body.title);
-      db.collection("post").insertOne(
-        { title: req.body.title, date: req.body.date },
+      db.collection("counter").findOne(
+        { name: "게시물 개수" },
         (error, result) => {
-          console.log("저장완료");
+          let totalPostCount = result.totalPostCount;
+          db.collection("post").insertOne(
+            {
+              _id: totalPostCount + 1,
+              title: req.body.title,
+              date: req.body.date,
+            },
+            (error, result) => {
+              console.log("저장완료");
+              db.collection("counter").updateOne(
+                { name: "게시물 개수" },
+                { $inc: { totalPostCount: 1 } },
+                function (error, result) {
+                  if (error) {
+                    return console.log(error);
+                  }
+                }
+              );
+            }
+          );
         }
       );
     });
